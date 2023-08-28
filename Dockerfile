@@ -4,9 +4,10 @@ LABEL Organization="qsnctf" Author="M0x1n <lqn@sierting.com>"
 
 COPY files /tmp/
 
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.nju.edu.cn/g' /etc/apk/repositories \
     && apk add --update --no-cache tar nginx mysql mysql-client \
-    && mkdir /run/nginx \
+    && mkdir -p /run/nginx \
+    && mkdir -p /var/log/nginx \
     # mysql ext
     && docker-php-source extract \
     && docker-php-ext-install mysqli pdo_mysql \
@@ -25,7 +26,6 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     && mv /tmp/docker-entrypoint /usr/local/bin/docker-entrypoint \
     && chmod +x /usr/local/bin/docker-entrypoint \
     && mv /tmp/nginx.conf /etc/nginx/nginx.conf \
-    && echo '<?php phpinfo();' > /var/www/html/index.php \
     && chown -R www-data:www-data /var/www/html \
     # clear
     && rm -rf /tmp/*
